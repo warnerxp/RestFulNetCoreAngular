@@ -8,11 +8,11 @@ namespace Northwind.DataAccess
 {
     public class Repository<T> : IRepository<T> where T : class
     {
-        protected string _connectionString;
+        protected string _connectionString = "Server=(localdb)\\MSSQLLocalDB;Database=Northwind;Trusted_Connection=True;MultipleActiveResultSets=True";
         public Repository(string connectionString)
         {
             SqlMapperExtensions.TableNameMapper = (type) => { return $"{type.Name}"; };
-            _connectionString = connectionString;
+            _connectionString = "Server=(localdb)\\MSSQLLocalDB;Database=Northwind;Trusted_Connection=True;MultipleActiveResultSets=True";  //connectionString;
         }
         public bool Delete(T entity)
         {
