@@ -5,9 +5,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using Northwind.DataAccess;
 using Northwind.UnitOfWork;
 using Northwind.WebApi.Authentication;
+using System;
+using System.Text;
 
 namespace Northwind.WebApi
 {
@@ -26,22 +29,40 @@ namespace Northwind.WebApi
             services.AddSingleton<IUnitOfWork>(option => new NorthwindUnitOfWork( 
                 Configuration.GetConnectionString("Northwind")
                 ));
-            var tokenProvider = new JwtProvider("issuer","audience","northwind_2000");
-            services.AddSingleton<ITokenProvider>(tokenProvider);
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    options.RequireHttpsMetadata = false;
-                    options.TokenValidationParameters = tokenProvider.GetValidationsParameters();
-                });
 
-            services.AddAuthorization(auth => {
+            //var tokenProvider = new JwtProvider("issuer", "audience", "northwind_2000");
+            //services.AddSingleton<ITokenProvider>(tokenProvider);
+            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            //    .AddJwtBearer(options =>
+            //    {
+            //        options.RequireHttpsMetadata = false;
+            //        options.TokenValidationParameters = tokenProvider.GetValidationsParameters();
+            //    });
+
+            services.AddAuthorization(auth =>
+            {
                 auth.DefaultPolicy = new AuthorizationPolicyBuilder()
                 .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
                 .RequireAuthenticatedUser()
                 .Build();
 
             });
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+               .AddJwtBearer(options =>
+                   options.TokenValidationParameters = new TokenValidationParameters
+                   {
+                       ValidateIssuer = true,
+                       ValidateAudience = true,
+                       ValidateLifetime = true,
+                       ValidateIssuerSigningKey = true,
+                       ValidIssuer = "yourdomain.com",
+                       ValidAudience = "yourdomain.com",
+                       IssuerSigningKey = new SymmetricSecurityKey(
+                           Encoding.UTF8.GetBytes(Configuration.GetSection("SecretKey").Value)),
+                       ClockSkew = TimeSpan.Zero
+                   });
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
