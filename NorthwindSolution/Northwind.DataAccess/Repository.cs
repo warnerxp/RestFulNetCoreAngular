@@ -8,11 +8,13 @@ namespace Northwind.DataAccess
 {
     public class Repository<T> : IRepository<T> where T : class
     {
-        protected string _connectionString = "Server=(localdb)\\MSSQLLocalDB;Database=Northwind;Trusted_Connection=True;MultipleActiveResultSets=True";
+        //protected string _connectionString = "Server=(localdb)\\MSSQLLocalDB;Database=Northwind;Trusted_Connection=True;MultipleActiveResultSets=True";
+        protected string _connectionString = "Server=tcp:warnerxp-azure2.database.windows.net,1433;Initial Catalog = Northwind; Persist Security Info=False;User ID = warnerxp; Password=W2008extreme4;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout = 30";
+        
         public Repository(string connectionString)
         {
             SqlMapperExtensions.TableNameMapper = (type) => { return $"{type.Name}"; };
-            _connectionString = "Server=(localdb)\\MSSQLLocalDB;Database=Northwind;Trusted_Connection=True;MultipleActiveResultSets=True";  //connectionString;
+            _connectionString = "Server=tcp:warnerxp-azure2.database.windows.net,1433;Initial Catalog = Northwind; Persist Security Info=False;User ID = warnerxp; Password=W2008extreme4;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout = 30";
         }
         public bool Delete(T entity)
         {
