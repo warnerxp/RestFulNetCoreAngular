@@ -46,7 +46,7 @@ namespace Northwind.WebApi.Controllers
         }
 
 
-        [HttpPut]
+        [HttpPut] 
         public IActionResult Put([FromBody] Customer customer)
         {
             if (ModelState.IsValid && _unitOfWork.Customer.Update(customer))

@@ -22,7 +22,7 @@ namespace Northwind.WebApi.Controllers
     public class TokenController : Controller
     {
         private readonly IConfiguration _configuration;
-        //private ITokenProvider _tokenProvider;
+        //private ITokenProvider _tokenProvider; 
         private IUnitOfWork _unitOfWork;
 
         //public TokenController(ITokenProvider tokenProvider, IUnitOfWork unitOfWork)

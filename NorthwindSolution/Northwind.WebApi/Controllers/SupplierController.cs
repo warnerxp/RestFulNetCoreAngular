@@ -21,7 +21,7 @@ namespace Northwind.WebApi.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        [HttpGet]
+        [HttpGet] 
         [Route("{id:int}")]
         public IActionResult GetById(int id)
         {

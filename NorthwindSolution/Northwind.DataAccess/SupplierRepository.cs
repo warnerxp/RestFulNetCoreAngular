@@ -12,7 +12,7 @@ namespace Northwind.DataAccess
     {
         public SupplierRepository(string connectionString) : base(connectionString)
         {
-        }
+        } 
 
         public IEnumerable<Supplier> SupplierPagedList(int page, int rows)
         {
